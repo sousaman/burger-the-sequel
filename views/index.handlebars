@@ -1,0 +1,48 @@
+<div class="col">
+    {{#each burgers}}
+        {{#unless devoured}}
+            <div>{{id}}. {{burger_name}}</div>
+            <br>
+        {{/unless}}
+    {{/each}}
+</div>
+
+<div class="col text-center">
+    {{#each burgers}}
+        {{#unless devoured}}
+            <button data-id="{{id}}" id="devour" class="btn btn-warning">NOM NOM NOM!!!</button>
+            <br>
+        {{/unless}}
+    {{/each}}
+</div>
+
+<div class="col">
+    {{#each burgers}}
+        {{#if devoured}}
+            <div>{{id}}. {{burger_name}}</div>
+            <br>
+        {{/if}}
+    {{/each}}
+</div>
+
+<script type="text/javascript">
+  $(document).on("click", "#devour", function(event) {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
+
+    var updateBurger = {
+      devoured: true,
+      id: $(this).data("id")
+    };
+
+    $.ajax("/devour", {
+      type: "POST",
+      data: updateBurger
+    }).then(
+      function() {
+        // Reload the page to get the updated list
+        location.reload();
+      }
+    );
+  });
+</script>
